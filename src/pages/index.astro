@@ -1,0 +1,36 @@
+---
+import Layout from '../layouts/Layout.astro';
+import QRGenerator from '../components/QRGenerator';
+---
+
+<Layout
+  title="QRCraft — Free QR Code Generator"
+  description="Generate QR codes for URLs, text, emails, phone numbers, WiFi, and contacts. Download as PNG, JPG, or SVG. Free, fast, client-side."
+>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="logo">
+        <div class="logo-mark">
+          <svg viewBox="0 0 18 18" fill="none">
+            <rect x="2" y="2" width="5" height="5" rx="1" fill="white"/>
+            <rect x="11" y="2" width="5" height="5" rx="1" fill="white"/>
+            <rect x="2" y="11" width="5" height="5" rx="1" fill="white"/>
+            <rect x="12" y="12" width="4" height="4" rx="0.5" fill="white" opacity="0.7"/>
+          </svg>
+        </div>
+        <span class="logo-text">QR<span>Craft</span></span>
+      </a>
+      <span class="header-tag">Free & Open Source</span>
+    </div>
+  </header>
+
+  <main class="container">
+    <QRGenerator client:visible />
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      Built with <a href="https://astro.build" target="_blank" rel="noopener">Astro</a> + <a href="https://react.dev" target="_blank" rel="noopener">React</a> · Client-side only, your data never leaves your browser
+    </div>
+  </footer>
+</Layout>
