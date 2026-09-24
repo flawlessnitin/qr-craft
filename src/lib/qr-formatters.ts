@@ -1,4 +1,4 @@
-export type ContentType = 'url' | 'text' | 'email' | 'phone' | 'sms' | 'wifi' | 'vcard';
+export type ContentType = 'url' | 'text' | 'email' | 'phone' | 'sms' | 'wifi' | 'vcard' | 'upi';
 
 export interface ContentTypeConfig {
   id: ContentType;
@@ -137,6 +137,39 @@ export const CONTENT_TYPES: ContentTypeConfig[] = [
     ],
   },
   {
+    id: 'upi',
+    label: 'UPI',
+    icon: '₹',
+    fields: [
+      {
+        name: 'vpa',
+        label: 'UPI ID (VPA)',
+        type: 'text',
+        placeholder: 'yourname@upi',
+        required: true,
+      },
+      {
+        name: 'payeeName',
+        label: 'Payee Name',
+        type: 'text',
+        placeholder: 'John Doe',
+        required: true,
+      },
+      {
+        name: 'amount',
+        label: 'Amount (₹)',
+        type: 'text',
+        placeholder: '100.00',
+      },
+      {
+        name: 'note',
+        label: 'Note',
+        type: 'text',
+        placeholder: 'Payment for...',
+      },
+    ],
+  },
+  {
     id: 'vcard',
     label: 'Contact',
     icon: '👤',
@@ -220,6 +253,16 @@ export function formatPayload(
       const enc = data.encryption || 'WPA';
       const pass = data.password ? `P:${escapeWifi(data.password)}` : '';
       return `WIFI:T:${enc};S:${escapeWifi(data.ssid)};${pass};;`;
+    }
+
+    case 'upi': {
+      if (!data.vpa) return '';
+      const params = [`pa=${encodeURIComponent(data.vpa)}`];
+      if (data.payeeName) params.push(`pn=${encodeURIComponent(data.payeeName)}`);
+      params.push('cu=INR');
+      if (data.amount) params.push(`am=${encodeURIComponent(data.amount)}`);
+      if (data.note) params.push(`tn=${encodeURIComponent(data.note)}`);
+      return `upi://pay?${params.join('&')}`;
     }
 
     case 'vcard': {
